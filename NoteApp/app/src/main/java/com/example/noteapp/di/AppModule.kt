@@ -1,11 +1,35 @@
 package com.example.noteapp.di
 
+import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.room.Room
+import com.example.noteapp.data.NoteDao
+import com.example.noteapp.data.NoteDatabase
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object AppModule{
+object AppModule {
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @Singleton
+    @Provides
+    fun providerNotesDao(noteDatabase: NoteDatabase): NoteDao = noteDatabase.noteDao()
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @Singleton
+    @Provides
+    fun providerAppDatabase(@ApplicationContext context: Context): NoteDatabase =
+        Room.databaseBuilder(
+            context, NoteDatabase::class.java,
+            "note_db"
+        ).fallbackToDestructiveMigration().build()
 
 }

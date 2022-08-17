@@ -23,8 +23,7 @@ import com.example.noteapp.R
 import com.example.noteapp.component.NoteButton
 import com.example.noteapp.component.NoteInputText
 import com.example.noteapp.model.Note
-import java.time.format.DateTimeFormatter
-
+import com.example.noteapp.util.formatDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -117,7 +116,7 @@ fun NoteRow(
         horizontalAlignment = Alignment.Start) {
             Text(text = note.title, style = MaterialTheme.typography.subtitle2, color = Color.White)
             Text(text = note.description, style = MaterialTheme.typography.subtitle1, color = Color.White)
-            Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")), style = MaterialTheme.typography.caption, color = Color.White)
-        }
+            Text(text = formatDate(note.entryDate.time),
+                style = MaterialTheme.typography.caption)        }
     }
 }
