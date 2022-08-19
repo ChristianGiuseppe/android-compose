@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 object AppModule {
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     @Singleton
     @Provides
