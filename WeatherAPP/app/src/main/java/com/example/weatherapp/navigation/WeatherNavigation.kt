@@ -10,31 +10,50 @@ import androidx.navigation.navArgument
 import com.example.weatherapp.screen.MainScreen
 import com.example.weatherapp.screen.main.MainViewModel
 import com.example.weatherapp.screen.WeatherSplashScreen
+import com.example.weatherapp.screen.about.AboutScreen
+import com.example.weatherapp.screen.favorite.FavoriteScreen
 import com.example.weatherapp.screen.search.SearchScreen
+import com.example.weatherapp.screen.settings.SettingScreen
 
 @Composable
-fun WeatherNavigation(){
+fun WeatherNavigation() {
     val navController = rememberNavController()
-    NavHost(navController= navController,
-        startDestination = WeatherScreens.SplashScreen.name){
-        composable(WeatherScreens.SplashScreen.name){
-            WeatherSplashScreen(navController= navController)
+    NavHost(
+        navController = navController,
+        startDestination = WeatherScreens.SplashScreen.name
+    ) {
+        composable(WeatherScreens.SplashScreen.name) {
+            WeatherSplashScreen(navController = navController)
         }
         val route = WeatherScreens.MainScreen.name
         composable("${route}/city", arguments = listOf(
-            navArgument(name = "city"){
+            navArgument(name = "city") {
                 type = NavType.StringType
             }
-        )){
-            navBack -> navBack.arguments?.getString("city").let { city ->
-            val viewModel  = hiltViewModel<MainViewModel>()
-            MainScreen(navController= navController, viewModel, city = city)
-        }
+        )) { navBack ->
+            navBack.arguments?.getString("city").let { city ->
+                val viewModel = hiltViewModel<MainViewModel>()
+                MainScreen(navController = navController, viewModel, city = city)
+            }
 
         }
-        composable(WeatherScreens.SearchScreen.name){
-            SearchScreen(navController= navController)
+        composable(WeatherScreens.SearchScreen.name) {
+            SearchScreen(navController = navController)
         }
+
+        composable(WeatherScreens.AboutScreen.name) {
+            AboutScreen(navController = navController)
+        }
+
+        composable(WeatherScreens.FavoriteScreen.name) {
+            FavoriteScreen(navController = navController)
+        }
+
+        composable(WeatherScreens.SettingsScreen.name) {
+            SettingScreen(navController = navController)
+        }
+
+
     }
 
 }
