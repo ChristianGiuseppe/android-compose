@@ -27,7 +27,8 @@ import com.example.weatherapp.utils.formatDecimals
 
 @Composable
 fun HumidityPreassureWind(
-    weatherItem: WeatherItem
+    weatherItem: WeatherItem,
+    isImperial: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -69,10 +70,9 @@ fun HumidityPreassureWind(
                 modifier = Modifier.size(80.dp)
             )
 
-            Text(
-                text = "${weatherItem.humidity} mpn",
-                style = MaterialTheme.typography.caption
-            )
+            Text(text = "${formatDecimals(weatherItem.speed)} " + if (isImperial) "mph" else "m/s",
+                style = MaterialTheme.typography.caption)
+
 
         }
     }

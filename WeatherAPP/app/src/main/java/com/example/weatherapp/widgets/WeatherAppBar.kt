@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -16,8 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.weatherapp.model.Favorite
 import com.example.weatherapp.navigation.WeatherScreens
+import com.example.weatherapp.screen.favorite.FavoriteViewModel
 
 @Composable
 fun WeatherAppBar(
@@ -25,6 +29,7 @@ fun WeatherAppBar(
     icon: ImageVector? = null,
     navController: NavController,
     isMainScreen: Boolean = true,
+    favoriteViewModel: FavoriteViewModel = hiltViewModel(),
     elevation: Dp = 0.dp,
     onAddActionClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {}
@@ -37,6 +42,10 @@ fun WeatherAppBar(
 
     if (showDialog.value) {
         ShowSettingsDropDownMenu(showDialog = showDialog, navController)
+    }
+
+    val showIt = remember {
+        mutableStateOf(false)
     }
     TopAppBar(
         title = {
@@ -74,7 +83,37 @@ fun WeatherAppBar(
                         onButtonClicked.invoke();
                     })
 
+            if (isMainScreen) {
+                val isAlreadyFavList = favoriteViewModel
+                    .favList.collectAsState().value.filter { item ->
+                        (item.city == title.split(",")[0])
+                    }
 
+                if (isAlreadyFavList.isNullOrEmpty()) {
+
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Favorite icon",
+                        modifier = Modifier
+                            .scale(0.9f)
+                            .clickable {
+                                val dataList = title.split(",")
+                                favoriteViewModel.addFavorite(
+                                    Favorite(
+                                        city = dataList[0], // city name
+                                        country = dataList[1] // country code
+                                    )
+                                ).run {
+                                    showIt.value = true
+                                }
+                            },
+                        tint = Color.Red.copy(alpha = 0.6f)
+                    )
+                } else {
+                    showIt.value = false
+                    Box {}
+                }
+            }
         },
         backgroundColor = Color.Transparent,
         elevation = elevation,
