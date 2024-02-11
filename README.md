@@ -7,7 +7,7 @@ In this repository there are different kind of projects such as mobile apps and 
     <tr>
          <td style="text-align: center">
                 <a href="https://github.com/ChristianGiuseppe/android-compose/tree/main/Fruttella">Fruttella</a>
-                <img width="180" alt="Fruttella" src="" />
+                <img width="180" alt="Fruttella" src="https://github.com/ChristianGiuseppe/android-compose/blob/main/Fruttella/Fruttella.gif" />
         	</td>
     </tr>
 </table>
